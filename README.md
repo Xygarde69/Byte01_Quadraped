@@ -10,25 +10,9 @@ A MuJoCo model of a 12-DoF quadruped whose joints are modelled on the **CubeMars
 
 | File | Purpose |
 |---|---|
-| `assem1_ak60.xml` | MJCF robot model (links, joints, motors, sensors, floor) |
-| `run_sim.py` | Real-time sim + PD/feedforward controller + live matplotlib dashboard |
+| `../Models/byte01.xml` | MJCF robot model (links, joints, motors, sensors, floor) |
+| `main.py` | Real-time sim + PD/feedforward controller + live matplotlib dashboard |
 | `meshes/` | **You provide:** `base_link.STL`, `hip_*.STL`, `thigh_*.STL` / `Thigh_fr.STL`, `calf_*.STL` |
-
-Expected layout:
-
-```
-project/
-├── assem1_ak60.xml
-├── run_sim.py
-└── meshes/
-    ├── base_link.STL
-    ├── hip_fr.STL  Thigh_fr.STL  calf_fr.STL
-    ├── hip_fl.STL  thigh_fl.STL  calf_fl.STL
-    ├── hip_rr.STL  thigh_rr.STL  calf_rr.STL
-    └── hip_rl.STL  thigh_rl.STL  calf_rl.STL
-```
-
----
 
 ## Requirements
 
