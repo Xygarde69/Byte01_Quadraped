@@ -78,8 +78,8 @@ On Linux the viewer and matplotlib windows need a GUI-capable Python. If `import
 ## Quick start
 
 ```bash
-python run_sim.py          # Linux / Windows
-mjpython run_sim.py        # macOS (required by the MuJoCo viewer)
+python main.py          # Linux / Windows
+mjpython main.py        # macOS (required by the MuJoCo viewer)
 ```
 
 Two windows open: the MuJoCo 3D viewer and a matplotlib dashboard. Close the **viewer** to stop the simulation; the plot window then stays open until you close it.
