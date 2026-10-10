@@ -1,223 +1,122 @@
-# AK60 Quadruped – MuJoCo Simulation
+# Byte01 Quadruped MuJoCo Simulation
 
-A MuJoCo model of a 12-DoF quadruped whose joints are modelled on the **CubeMars AK60-6 V3.0 (KV80)** actuator with an additional **5.8:1 external reduction (70 % efficiency)**. A Python script drives the robot from the all-zero joint pose to a standing pose with a torque-level PD controller, holds it, and shows everything in a real-time viewer with a live, scrolling plot dashboard.
+This project contains MuJoCo models and Python controllers for the Byte01 four-legged robot. The robot has four legs with three actuated joints per leg: hip abduction, thigh, and knee (12 actuators total).
 
-> **Status:** the model and script were written against the MuJoCo XML reference and checked for syntax, but have not been run against the original STL meshes. Treat the first run as a commissioning step (see [Troubleshooting](#troubleshooting)).
+## Repository layout
 
----
+```text
+Model/
+├── V1/
+│   ├── byte01.xml       # V1 MuJoCo model
+│   └── meshes/           # V1 STL meshes
+└── V2/
+    ├── V2.xml           # V2 MuJoCo model
+    ├── DOggo_assem.urdf  # Source/ reference URDF
+    └── meshes/           # V2 STL meshes
 
-## Contents
-
-| File | Purpose |
-|---|---|
-| `../Models/byte01.xml` | MJCF robot model (links, joints, motors, sensors, floor) |
-| `main.py` | Real-time sim + PD/feedforward controller + live matplotlib dashboard |
-| `meshes/` | **You provide:** `base_link.STL`, `hip_*.STL`, `thigh_*.STL` / `Thigh_fr.STL`, `calf_*.STL` |
+scripts/
+├── main.py              # Controller launcher
+├── prev_versions/
+│   ├── V1.py             # V1 controller and live dashboard
+│   └── V2.py             # V2 controller and live dashboard
+└── MUJOCO_LOG.TXT
+```
 
 ## Requirements
 
-- Python 3.9+
-- MuJoCo >= 3.0 (needed for the `implicitfast` integrator and the viewer)
-- `numpy`, `matplotlib`
+- Python 3.9 or newer
+- MuJoCo Python bindings
+- NumPy
+- Matplotlib
 
-### Installation
-
-Recommended: use a virtual environment.
+Install the dependencies in a virtual environment:
 
 ```bash
-# create and activate a virtual environment
+cd Byte01_Quadraped
 python -m venv .venv
-source .venv/bin/activate          # Linux / macOS
-# .venv\Scripts\activate           # Windows (cmd / PowerShell)
-
-# install dependencies
+source .venv/bin/activate       # Linux/macOS
+# .venv\Scripts\activate        # Windows
 python -m pip install --upgrade pip
-pip install "mujoco>=3.0" numpy matplotlib
+python -m pip install mujoco numpy matplotlib
 ```
 
-Or without a virtual environment:
+The viewer and Matplotlib require a desktop/GUI session. On Linux, install Tk if Matplotlib cannot open a window:
 
 ```bash
-pip install mujoco numpy matplotlib
+sudo apt install python3-tk
 ```
 
-Optional: pin everything in a `requirements.txt` and install with `pip install -r requirements.txt`:
+## Running the simulation
 
-```
-mujoco>=3.0
-numpy
-matplotlib
-```
-
-Check the install:
+Run the current V2 controller from the project root:
 
 ```bash
-python -c "import mujoco, numpy, matplotlib; print('MuJoCo', mujoco.__version__)"
+python scripts/main.py
 ```
 
-On Linux the viewer and matplotlib windows need a GUI-capable Python. If `import tkinter` fails (needed by the TkAgg backend), install it with `sudo apt install python3-tk`.
-
----
-
-## Quick start
+Run a specific model/controller version:
 
 ```bash
-python main.py          # Linux / Windows
-mjpython main.py        # macOS (required by the MuJoCo viewer)
+python scripts/main.py v2   # default; loads Model/V2/V2.xml
+python scripts/main.py v1   # loads Model/V1/byte01.xml
 ```
 
-Two windows open: the MuJoCo 3D viewer and a matplotlib dashboard. Close the **viewer** to stop the simulation; the plot window then stays open until you close it.
+Any additional arguments are forwarded to the selected controller script. On macOS, use `mjpython` if the MuJoCo viewer requires it:
 
-If the plot window misbehaves on macOS, add `matplotlib.use("TkAgg")` before `import matplotlib.pyplot`.
-
----
-
-## What the simulation does
-
-1. The robot starts with every joint at **0 rad**, base 0.55 m above the floor, and drops.
-2. From t = 0 the PD target is the **standing pose** (thigh ±0.6 rad, knee ±1.2 rad, abduction 0). The initial error is large, so the torque saturates at the actuator limit and the legs move as fast as the model allows.
-3. The controller then holds the pose.
-4. The sim runs in **real time** (physics is stepped to catch up with the wall clock) and the plots update live.
-
-The script prints the time at which all joints first come within 0.05 rad of their targets.
-
-### Joint sign handling
-
-Axis conventions differ between legs in the model, so the script finds the correct sign of each joint automatically: it nudges each thigh/knee joint and checks which way the calf moves, then picks signs that give *thigh forward, knee bent back* on every leg. "Forward" is taken as **−x** (the front hips sit at x = −0.1595).
-
----
-
-## Robot model
-
-### Bodies and masses
-
-| Body | Mass |
-|---|---|
-| `base_link` | 10 kg (inertia computed from mesh convex hull) |
-| each hip / thigh / calf (12 links) | 1.38 kg = 0.38 kg (AK60) + 1.0 kg |
-| **Total** | **26.56 kg** |
-
-Link centres of mass are unchanged from the original model; link inertias were scaled by `1.38 / original_mass`.
-
-### Joints (per leg, 4 legs: `fr`, `fl`, `rr`, `rl`)
-
-| Joint | Range |
-|---|---|
-| `hip_<leg>` (abduction) | ±0.8 rad |
-| `hip_<leg>_2` (thigh) | ±1.57 rad |
-| `knee_<leg>` | ±2.5 rad |
-
-### AK60 actuator parameters (joint side)
-
-Assumptions: 48 V bus, 6:1 internal gearbox, 5.8:1 external stage, 70 % efficiency applied to the external stage.
-
-| Quantity | Derivation | Value |
-|---|---|---|
-| Total gear ratio | 6 × 5.8 | 34.8 |
-| Peak torque | 9 Nm × 5.8 × 0.70 | **36.54 Nm** |
-| Rated torque | 3 Nm × 5.8 × 0.70 | 12.18 Nm |
-| Max (no-load) speed | 640 rpm ÷ 5.8 | **11.55 rad/s** (5.78 rad/s at 24 V) |
-| Rated speed | 490 rpm ÷ 5.8 | 8.85 rad/s |
-| Joint `armature` | 2.435e-5 kg·m² × 34.8² | 0.0295 kg·m² |
-| Joint `frictionloss` | 0.2 Nm × 5.8 ÷ 0.70 | 1.66 Nm |
-| Joint `damping` | estimate | 0.1 N·m·s/rad |
-
-These are stored in the XML as defaults and in `custom/numeric` `ak60_joint_limits` (peak torque, rated torque, no-load speed, rated speed, total ratio).
-
-### Actuators
-
-Twelve `motor` actuators (direct torque, `ctrl` in **Nm**, clamped to ±36.54 Nm). The joint `actuatorfrcrange` is set to the same limit. `ctrl` order:
-
-```
-hip_fr, hip_fr_2, knee_fr,  hip_fl, hip_fl_2, knee_fl,
-hip_rr, hip_rr_2, knee_rr,  hip_rl, hip_rl_2, knee_rl
+```bash
+mjpython scripts/main.py v2
 ```
 
-The script maps joints to actuators through the transmission, so the order in the XML is not critical.
+The simulation opens a MuJoCo viewer and a live Matplotlib dashboard. Close the MuJoCo viewer to end the simulation; the plot window can then be closed separately.
 
-### Collision
+## How the controller works
 
-All geoms are white. Only the **base** and the **calves** collide, and only with the floor (`contype=1`, `conaffinity=0` on those geoms; the floor is `1/1`). Hips and thighs are visual only. This avoids self-collision jitter from overlapping meshes at the zero pose.
+Both controller versions:
 
-### Sensors
+1. Load their corresponding XML model.
+2. Reset the robot to zero joint positions.
+3. Compute a standing target pose.
+4. Apply torque control at each physics step using PD control plus integral correction.
+5. Optionally add inverse-dynamics feedforward torque to help hold the robot upright.
+6. Display joint position, velocity, and commanded torque in a scrolling dashboard.
 
-Per joint: position (`q_*`), velocity (`dq_*`), actuator torque (`tau_*`). Plus an IMU at the base (`imu_acc`, `imu_gyro`, `imu_quat`).
+The controller automatically maps joints to actuators through each actuator transmission, so it does not depend on actuator ordering in the XML. It also probes joint directions at startup to account for model-specific axis signs.
 
-### Simulation settings
+## Controller settings
 
-Timestep 2 ms, `implicitfast` integrator.
+Tune the constants near the top of `scripts/prev_versions/V1.py` or `scripts/prev_versions/V2.py`:
 
----
+- `KP`, `KD`, `KI`: position, velocity, and integral gains
+- `I_MAX`: integral torque limit
+- `USE_FF`: enable inverse-dynamics holding-torque feedforward
+- `TAU_MAX`: controller torque limit
+- `STAND_ANGLE`: target thigh angle; the knee target is twice this value
+- `WINDOW_S`, `PLOT_HZ`, `DECIMATE`: dashboard history and update settings
+- `SETTLE_TOL`: tolerance used by the settling message
 
-## Controller
+V1 and V2 are separate model/controller revisions. V1 names the upper-leg joint `hip_<leg>_2`; V2 names it `thigh_<leg>`.
 
-Runs in Python **every physics step**:
+## Model details
 
+The four legs are named `fr`, `fl`, `rr`, and `rl`. Each leg contains:
+
+```text
+hip_<leg>
+thigh_<leg>   # V2
+knee_<leg>
 ```
-tau = KP·(q_des − q) + KD·(dq_des − dq) + KI·∫e dt + tau_ff
-tau = clip(tau, −36.54, 36.54)
-```
 
-| Term | Details |
-|---|---|
-| `KP`, `KD` | 100 Nm/rad, 4 N·m·s/rad |
-| `KI` | 30, integral clamped to ±10 Nm, frozen while a joint is saturated (anti-windup) |
-| `tau_ff` | Holding torque from **inverse dynamics** with `qacc = 0` at the current pose (leg weight + contact forces carrying the body). Without this, a pure PD law only outputs torque proportional to error and the robot sags. |
-
-Tunables are the constants at the top of `run_sim.py`:
-
-| Constant | Meaning |
-|---|---|
-| `KP`, `KD`, `KI`, `I_MAX` | Controller gains |
-| `USE_FF` | Enable/disable the inverse-dynamics feedforward |
-| `STAND_ANGLE` | Thigh angle of the standing pose (knee = 2×) |
-| `WINDOW_S`, `PLOT_HZ`, `DECIMATE` | Plot history length, refresh rate, sim-step decimation |
-| `SETTLE_TOL` | Tolerance for the "target reached" message |
-
----
-
-## Live dashboard
-
-A 4 × 3 grid, one row per leg:
-
-| Column | Content |
-|---|---|
-| Position [rad] | Actual joint angle, dashed line = target |
-| Velocity [rad/s] | Joint velocity, black lines at ±11.55 rad/s |
-| Torque command [Nm] | `ctrl` sent to the motors, black lines at ±36.54 Nm |
-
-The window scrolls over the last 5 s.
-
----
-
-## Using your own controller
-
-Replace `pd_control()` in `run_sim.py`. It must write 12 torques (Nm) into `data.ctrl[ctrl_idx]` and return them (for logging). For a learned policy running slower than the physics, keep the PD loop at the sim rate and let the policy update `q_des`, `dq_des`, `tau_ff` and gains. An explicit PD at a slow rate with high `KD` will chatter (the stability limit is roughly `KD·Δt / J < 1` with `J ≈ 0.04 kg·m²`).
-
-To get the AK60's MIT-mode behaviour inside MuJoCo instead, replace the `motor` actuators with `pid` actuators (`input="pos vel ff"`, `kp`, `kv`, `forcerange`); the control vector then has three entries per joint.
-
----
-
-## Known limitations
-
-- **No hard velocity limit.** MuJoCo has no joint speed limit, and the motors have no torque-speed curve; 11.55 rad/s is only a plotting/reference line. If you need it, derate torque with speed in your controller.
-- **Efficiency** is applied as a constant 70 % derate of the external stage's torque; real efficiency varies with load and speed.
-- **Torque constant:** 0.135 Nm/A is interpreted as the motor-side value (consistent with the 9 Nm peak at ~11 A through the 6:1 gearbox). No electrical model is simulated.
-- **Joint axes** are copied from the original model; several are not mirror-symmetric between left and right legs. The sign probe compensates for the target pose, but your own controllers must account for it.
-- **Frictionloss of 1.66 Nm** is a conservative back-drive estimate and creates a small dead-band; reduce it in the XML `<default><joint .../>` for freer joints.
-- Feet have no dedicated geoms; the calf meshes are the contact surfaces.
-
----
+The V1 model uses `hip_<leg>_2` in place of `thigh_<leg>`. The XML files define the robot geometry, STL mesh assets, joints, actuators, contacts, and simulation settings. Mesh paths are relative to each XML file, so keep each model's `meshes/` directory in place.
 
 ## Troubleshooting
 
-| Symptom | Likely cause / fix |
-|---|---|
-| `Could not find mesh` / file errors | `meshes/` folder missing or file names don't match (case-sensitive on Linux, e.g. `Thigh_fr.STL`) |
-| Compile error on mesh inertia/`inertia` attribute | MuJoCo too old; upgrade or remove `inertia="convex"` |
-| Base clips into floor or hovers high | Adjust `pos="0 0 0.55"` of `base_link` in the XML to your mesh dimensions |
-| Legs fold the wrong way | Check the sign probe (forward assumed to be −x); swap signs in `target` |
-| Robot sags or knee torque pins at ±36.54 Nm | Pose too crouched for the payload; lower `STAND_ANGLE`, or raise `KP`/`KI` |
-| Chatter / vibration | Reduce `KD` or `KP`, or reduce the timestep |
-| Viewer stutters | Lower `PLOT_HZ` or raise `DECIMATE` |
-| macOS: viewer error | Use `mjpython`, not `python` |
+- **Mesh or XML file not found:** run the command from the project root and verify that the selected model's `meshes/` directory exists.
+- **Wrong version loaded:** use `python scripts/main.py v1` or `v2`; the default is V2.
+- **Viewer does not open:** use a GUI-capable Python session. On macOS, try `mjpython`.
+- **Matplotlib backend errors:** install Tk (`python3-tk` on Debian/Ubuntu) or configure a backend supported by your desktop environment.
+- **Robot moves in the wrong direction:** check the joint sign probe and target-angle convention in the selected controller.
+- **Excessive vibration or saturation:** reduce `KP`/`KD`, lower the target pose, or adjust the torque limit and model parameters.
+
+## Status
+
+The repository contains two controller/model revisions. V2 is the default entry point; V1 is retained for comparison and regression testing. Validate mesh paths, contacts, and controller gains on the target machine before using the simulation for hardware decisions.
