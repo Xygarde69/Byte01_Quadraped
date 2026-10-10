@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="DOggo_assem">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-1.39141166144441E-07 -0.000102367831572137 0.0376848659429115"
+        rpy="0 0 0" />
+      <mass
+        value="1.73024080262229" />
+      <inertia
+        ixx="0.0119864182733634"
+        ixy="-3.44318258842754E-07"
+        ixz="5.07419375128569E-08"
+        iyy="0.00603727311198037"
+        iyz="-8.1995142506794E-08"
+        izz="0.0155969103726285" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="hip_fl">
+    <inertial>
+      <origin
+        xyz="-0.00107903741175991 1.93245910015127E-05 0.0598853176824068"
+        rpy="0 0 0" />
+      <mass
+        value="0.3488770277897" />
+      <inertia
+        ixx="0.000412995084891998"
+        ixy="1.08046446308593E-07"
+        ixz="6.23807816117179E-08"
+        iyy="0.000277218257530374"
+        iyz="9.3550857495505E-08"
+        izz="0.000232352130984772" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/hip_fl.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/hip_fl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="hip_fl"
+    type="revolute">
+    <origin
+      xyz="-0.065 0.166 0.054"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="hip_fl" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="thigh_fl">
+    <inertial>
+      <origin
+        xyz="0.0614262309487191 -0.0367304727987537 -0.00484072113004497"
+        rpy="0 0 0" />
+      <mass
+        value="0.565478032991041" />
+      <inertia
+        ixx="0.0018683746871774"
+        ixy="6.55019884275178E-07"
+        ixz="-4.18945153581818E-07"
+        iyy="0.000331208232241525"
+        iyz="-5.2136991966418E-05"
+        izz="0.0015793005753525" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/thigh_fl.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/thigh_fl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_fl"
+    type="revolute">
+    <origin
+      xyz="0.028 0 0.072631"
+      rpy="0 0 0" />
+    <parent
+      link="hip_fl" />
+    <child
+      link="thigh_fl" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="calf_fl">
+    <inertial>
+      <origin
+        xyz="0.00713020527374547 -0.13840897725996 -0.0146239566808795"
+        rpy="0 0 0" />
+      <mass
+        value="0.140037779049199" />
+      <inertia
+        ixx="0.000669664610635741"
+        ixy="-2.85014101621303E-10"
+        ixz="-4.81888522011792E-10"
+        iyy="6.33787573619652E-05"
+        iyz="-0.00014322984256351"
+        izz="0.000632426108202114" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/calf_fl.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/calf_fl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="knee_fl"
+    type="revolute">
+    <origin
+      xyz="0.079 -0.21278 0.0096672"
+      rpy="0 0 0" />
+    <parent
+      link="thigh_fl" />
+    <child
+      link="calf_fl" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="hip_fr">
+    <inertial>
+      <origin
+        xyz="0.00107903741154514 -1.93245910188322E-05 0.0598853176824523"
+        rpy="0 0 0" />
+      <mass
+        value="0.348877027789699" />
+      <inertia
+        ixx="0.000412995084891998"
+        ixy="1.08046446308681E-07"
+        ixz="-6.23807816115455E-08"
+        iyy="0.000277218257530374"
+        iyz="-9.3550857493959E-08"
+        izz="0.000232352130984772" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/hip_fr.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/hip_fr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="hip_fr"
+    type="revolute">
+    <origin
+      xyz="0.065 0.166 0.054"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="hip_fr" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="thigh_fr">
+    <inertial>
+      <origin
+        xyz="-0.0614262249860422 -0.036130339396073 -0.00522454182835297"
+        rpy="0 0 0" />
+      <mass
+        value="0.565478032993293" />
+      <inertia
+        ixx="0.00186837468717846"
+        ixy="6.55020012428489E-07"
+        ixz="-4.18944953451414E-07"
+        iyy="0.000331208232380074"
+        iyz="-5.21369919018523E-05"
+        izz="0.00157930057521495" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/thigh_fr.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/thigh_fr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_fr"
+    type="revolute">
+    <origin
+      xyz="-0.028 0 0.072631"
+      rpy="0 0 0" />
+    <parent
+      link="hip_fr" />
+    <child
+      link="thigh_fr" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="calf_fr">
+    <inertial>
+      <origin
+        xyz="0.00314980526910791 -0.138408659469926 -0.0146238988704779"
+        rpy="0 0 0" />
+      <mass
+        value="0.14003832609265" />
+      <inertia
+        ixx="0.000669668364015168"
+        ixy="-2.84971644266512E-10"
+        ixz="-4.81876372509715E-10"
+        iyy="6.33788335580759E-05"
+        iyz="-0.000143230539317289"
+        izz="0.000632429837248265" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/calf_fr.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/calf_fr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="knee_fr"
+    type="revolute">
+    <origin
+      xyz="-0.08928 -0.21278 0.0096672"
+      rpy="0 0 0" />
+    <parent
+      link="thigh_fr" />
+    <child
+      link="calf_fr" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="hip_rl">
+    <inertial>
+      <origin
+        xyz="-0.00107903741155779 -1.93245910390383E-05 -0.0598853176824583"
+        rpy="0 0 0" />
+      <mass
+        value="0.348877027789701" />
+      <inertia
+        ixx="0.000412995084891998"
+        ixy="-1.08046446308634E-07"
+        ixz="-6.23807816116598E-08"
+        iyy="0.000277218257530372"
+        iyz="9.3550857493815E-08"
+        izz="0.000232352130984774" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/hip_rl.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/hip_rl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="hip_rl"
+    type="revolute">
+    <origin
+      xyz="-0.065 -0.166 0.054"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="hip_rl" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="thigh_rl">
+    <inertial>
+      <origin
+        xyz="0.0614262309486125 -0.0367304727988362 -0.00484072113074374"
+        rpy="0 0 0" />
+      <mass
+        value="0.56547803299104" />
+      <inertia
+        ixx="0.00186837468717739"
+        ixy="6.55019884275671E-07"
+        ixz="-4.189451535818E-07"
+        iyy="0.000331208232241518"
+        iyz="-5.21369919664177E-05"
+        izz="0.0015793005753525" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/thigh_rl.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/thigh_rl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_rl"
+    type="revolute">
+    <origin
+      xyz="0.028 0 -0.072631"
+      rpy="0 0 0" />
+    <parent
+      link="hip_rl" />
+    <child
+      link="thigh_rl" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="calf_rl">
+    <inertial>
+      <origin
+        xyz="0.00713020527036984 -0.138408659477336 -0.0146238988665082"
+        rpy="0 0 0" />
+      <mass
+        value="0.140038326096252" />
+      <inertia
+        ixx="0.000669668364032826"
+        ixy="-2.84973265954413E-10"
+        ixz="-4.8187681283909E-10"
+        iyy="6.33788335599211E-05"
+        iyz="-0.000143230539321778"
+        izz="0.000632429837264352" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/calf_rl.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/calf_rl.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="knee_rl"
+    type="revolute">
+    <origin
+      xyz="0.079 -0.21278 0.0096672"
+      rpy="0 0 0" />
+    <parent
+      link="thigh_rl" />
+    <child
+      link="calf_rl" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="hip_rr">
+    <inertial>
+      <origin
+        xyz="0.00107903741155602 1.93245910582451E-05 -0.0598853176824568"
+        rpy="0 0 0" />
+      <mass
+        value="0.348877027789699" />
+      <inertia
+        ixx="0.000412995084891997"
+        ixy="-1.08046446308683E-07"
+        ixz="6.23807816119628E-08"
+        iyy="0.000277218257530372"
+        iyz="-9.35508574947175E-08"
+        izz="0.000232352130984772" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/hip_rr.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/hip_rr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="hip_rr"
+    type="revolute">
+    <origin
+      xyz="0.065 -0.166 0.054"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="hip_rr" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="thigh_rr">
+    <inertial>
+      <origin
+        xyz="-0.0614262249860478 -0.0361303393960668 -0.00522454182837029"
+        rpy="0 0 0" />
+      <mass
+        value="0.565478032993293" />
+      <inertia
+        ixx="0.00186837468717844"
+        ixy="6.55020012428665E-07"
+        ixz="-4.18944953451402E-07"
+        iyy="0.000331208232380055"
+        iyz="-5.21369919018474E-05"
+        izz="0.00157930057521495" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/thigh_rr.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/thigh_rr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="thigh_rr"
+    type="revolute">
+    <origin
+      xyz="-0.028 0 -0.072631"
+      rpy="0 0 0" />
+    <parent
+      link="hip_rr" />
+    <child
+      link="thigh_rr" />
+    <axis
+      xyz="-1 0 0" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+  <link
+    name="calf_rr">
+    <inertial>
+      <origin
+        xyz="0.0031498051814377 -0.138408977280419 -0.0146239566885846"
+        rpy="0 0 0" />
+      <mass
+        value="0.140037778997216" />
+      <inertia
+        ixx="0.000669664610277695"
+        ixy="-2.8496697029646E-10"
+        ixz="-4.81875667531891E-10"
+        iyy="6.33787573282342E-05"
+        iyz="-0.000143229842473799"
+        izz="0.000632426107864286" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/calf_rr.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.894117647058823 0.894117647058823 0.894117647058823 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DOggo_assem/meshes/calf_rr.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="knee_rr"
+    type="revolute">
+    <origin
+      xyz="-0.08928 -0.21278 0.0096672"
+      rpy="0 0 0" />
+    <parent
+      link="thigh_rr" />
+    <child
+      link="calf_rr" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="2"
+      upper="2"
+      effort="2"
+      velocity="2" />
+  </joint>
+</robot>
